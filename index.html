@@ -39,6 +39,8 @@ iframe{width:100%;height:100%;border:0;background:var(--bg)}
 <div class="nav-item" data-target="sync">資料同步管理</div>
 <div class="nav-item" data-target="activity">活動管理</div>
 <div class="nav-item" data-target="notice">公告管理</div>
+<div class="nav-group">客服管理</div>
+<div class="nav-item" data-target="suspension">停權名單管理</div>
 <div class="nav-group">系統管理</div>
 <div class="nav-item" data-target="permission">權限管理</div>
 <div class="nav-item" data-target="log">操作紀錄</div>
@@ -83,6 +85,10 @@ table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;back
 
 .meta-info{background:#fafbfe;border:1px solid #e6e8ef;border-radius:8px;padding:12px;font-size:13px;color:#5f6878;line-height:1.8}
 .meta-info b{color:#2c3440}
+.sort-cell{display:flex;align-items:center;gap:6px}.sort-cell b{min-width:18px}
+.sort-btn{width:22px;height:22px;border:1px solid #cfd6e4;border-radius:4px;background:#fff;color:#5f6878;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;user-select:none}
+.sort-btn:hover{border-color:var(--blue);color:var(--blue)}
+.sort-muted{color:#aab2c0;font-size:12px}
 
 
 /* Master CMS wrapper: hide duplicated inner sidebar/topbar; keep original page content */
@@ -120,7 +126,7 @@ body{background:#f4f6f9!important}
   &lt;div&gt;
     &lt;h1&gt;精選遊戲管理&lt;/h1&gt;
     &lt;div class=&quot;desc&quot;&gt;管理首頁精選遊戲與精選遊戲頁。排序共用一個欄位。&lt;/div&gt;
-    &lt;div class=&quot;logic&quot;&gt;首頁：上架＋首頁精選＝是，依排序取前 15 筆。精選遊戲頁：上架，依同一個排序顯示。精選遊戲與遊戲分類列表需顯示最後更新者與最後更新時間，方便追蹤誰最後修改。&lt;/div&gt;
+    &lt;div class=&quot;logic&quot;&gt;首頁：上架＋首頁精選＝是，依排序取前 15 筆。精選遊戲頁：上架，依同一個排序顯示。精選遊戲與遊戲分類列表需顯示最後更新者與最後更新時間，方便追蹤誰最後修改。&lt;br&gt;&lt;b&gt;排序規則（v2）：&lt;/b&gt;不開放手動輸入排序數字，一律在列表用「置頂／上移／下移」調整；系統內部以間隔編號（10、20、30…）儲存，插入時自動取中間值、間隔用盡時自動全表重編，從根本避免輸入 1.1 等非整數造成排序錯亂。&lt;/div&gt;
   &lt;/div&gt;
   &lt;button class=&quot;btn primary&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;＋ 新增遊戲&lt;/button&gt;
 &lt;/div&gt;
@@ -143,9 +149,9 @@ body{background:#f4f6f9!important}
   &lt;table&gt;
     &lt;thead&gt;&lt;tr&gt;&lt;th&gt;序號&lt;/th&gt;&lt;th&gt;圖片&lt;/th&gt;&lt;th&gt;遊戲名稱&lt;/th&gt;&lt;th&gt;遊戲商&lt;/th&gt;&lt;th&gt;分類&lt;/th&gt;&lt;th&gt;首頁精選&lt;/th&gt;&lt;th&gt;排序&lt;/th&gt;&lt;th&gt;狀態&lt;/th&gt;&lt;th&gt;最後更新者&lt;/th&gt;&lt;th&gt;最後更新時間&lt;/th&gt;&lt;th&gt;操作&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
     &lt;tbody&gt;
-      &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;Fortune Tiger&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：pg_126&lt;/div&gt;&lt;/td&gt;&lt;td&gt;PG Soft&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
-      &lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;海王捕魚&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：fish_001&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
-      &lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;百人牛牛&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：card_010&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;否&lt;/span&gt;&lt;/td&gt;&lt;td&gt;99&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;下架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;upModal&#x27;)&quot;&gt;上架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;Fortune Tiger&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：pg_126&lt;/div&gt;&lt;/td&gt;&lt;td&gt;PG Soft&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;1&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;海王捕魚&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：fish_001&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;2&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;百人牛牛&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：card_010&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;否&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;sort-muted&quot;&gt;—（下架不參與排序）&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;下架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;upModal&#x27;)&quot;&gt;上架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
     &lt;/tbody&gt;
   &lt;/table&gt;
 &lt;/section&gt;
@@ -154,9 +160,9 @@ body{background:#f4f6f9!important}
 &lt;section id=&quot;page-categories&quot; class=&quot;page&quot;&gt;
 &lt;div class=&quot;head&quot;&gt;&lt;div&gt;&lt;h1&gt;遊戲分類管理&lt;/h1&gt;&lt;div class=&quot;desc&quot;&gt;維護精選遊戲可選的分類，例如電子、捕魚、棋牌。分類不常異動，但獨立頁面會比較清楚。&lt;/div&gt;&lt;/div&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;＋ 新增分類&lt;/button&gt;&lt;/div&gt;
 &lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;card-hd&quot;&gt;分類列表&lt;/div&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;序號&lt;/th&gt;&lt;th&gt;分類名稱&lt;/th&gt;&lt;th&gt;排序&lt;/th&gt;&lt;th&gt;狀態&lt;/th&gt;&lt;th&gt;最後更新者&lt;/th&gt;&lt;th&gt;最後更新時間&lt;/th&gt;&lt;th&gt;操作&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;停用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;1&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;2&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;sort-muted&quot;&gt;—（停用不參與排序）&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;停用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;&lt;/section&gt;
 &lt;/section&gt;
 
@@ -166,7 +172,7 @@ body{background:#f4f6f9!important}
 &lt;section class=&quot;modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;新增遊戲 / 編輯遊戲 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;gameModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;form&quot;&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;上架&lt;/option&gt;&lt;option&gt;下架&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;是否首頁精選 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;是&lt;/option&gt;&lt;option&gt;否&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;1&quot;&gt;&lt;div class=&quot;hint&quot;&gt;首頁與精選遊戲頁共用同一個排序。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序位置&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;第 1 位（共 15 筆）&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;首頁與精選遊戲頁共用同一個排序。排序一律在列表用「置頂／上移／下移」調整，此欄僅顯示目前位置，不開放手動輸入數字。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;遊戲分類 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;電子&lt;/option&gt;&lt;option&gt;捕魚&lt;/option&gt;&lt;option&gt;棋牌&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;遊戲圖片 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;upload&quot;&gt;&lt;div class=&quot;plus&quot;&gt;＋&lt;/div&gt;&lt;div&gt;上傳圖片&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;建議 1:1，至少 512 × 512 px&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;遊戲名稱 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;Fortune Tiger&quot;&gt;&lt;/div&gt;
@@ -178,7 +184,7 @@ body{background:#f4f6f9!important}
 &lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;gameModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;gameModal&#x27;);openModal(&#x27;successModal&#x27;)&quot;&gt;儲存&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;
 &lt;/div&gt;
 
-&lt;div id=&quot;categoryModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;新增 / 編輯分類 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;分類名稱 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;電子&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;1&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;啟用&lt;/option&gt;&lt;option&gt;停用&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;停用分類後，新增/編輯遊戲時不再顯示，但既有資料仍保留。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;儲存&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;div id=&quot;categoryModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;新增 / 編輯分類 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;分類名稱 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;電子&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序位置&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;第 1 位（共 3 筆）&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;排序一律在列表用「置頂／上移／下移」調整，不開放手動輸入數字。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;啟用&lt;/option&gt;&lt;option&gt;停用&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;停用分類後，新增/編輯遊戲時不再顯示，但既有資料仍保留。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;儲存&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
 &lt;div id=&quot;previewModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal preview-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;前台遊戲彈窗預覽 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;previewModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;phone&quot;&gt;&lt;div class=&quot;game-preview&quot;&gt;&lt;div class=&quot;pimg&quot;&gt;遊戲圖片&lt;/div&gt;&lt;div class=&quot;ptitle&quot;&gt;Fortune Tiger&lt;/div&gt;&lt;div class=&quot;pdesc&quot;&gt;人氣老虎機遊戲，節奏快速、畫面鮮明，適合喜歡簡單直覺玩法的玩家。&lt;/div&gt;&lt;div class=&quot;qrrow&quot;&gt;&lt;div class=&quot;qr&quot;&gt;QR&lt;/div&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;&lt;b style=&quot;color:#FFD700&quot;&gt;掃描 QR Code&lt;/b&gt;&lt;br&gt;立即開啟遊戲&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;play&quot;&gt;立即進入遊戲&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
 &lt;div id=&quot;downModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;下架確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;downModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message danger-msg&quot;&gt;確定要下架 &lt;b&gt;Fortune Tiger&lt;/b&gt; 嗎？&lt;br&gt;下架後，該遊戲將不會出現在首頁精選遊戲與精選遊戲頁。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;downModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn red&quot; onclick=&quot;closeModal(&#x27;downModal&#x27;)&quot;&gt;確認下架&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
 &lt;div id=&quot;upModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;上架確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;upModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message info-msg&quot;&gt;確定要上架 &lt;b&gt;百人牛牛&lt;/b&gt; 嗎？&lt;br&gt;上架後，玩家即可在官網前台看到此遊戲。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;upModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;upModal&#x27;)&quot;&gt;確認上架&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
@@ -187,6 +193,19 @@ body{background:#f4f6f9!important}
 &lt;script&gt;
 function openModal(id){document.getElementById(id).classList.add(&#x27;open&#x27;)}
 function closeModal(id){document.getElementById(id).classList.remove(&#x27;open&#x27;)}
+/* 排序：置頂／上移／下移，移動後自動重編序號與排序位置 */
+document.addEventListener(&#x27;click&#x27;,function(e){
+  var btn=e.target.closest(&#x27;.sort-btn&#x27;); if(!btn) return;
+  var tr=btn.closest(&#x27;tr&#x27;), tbody=tr.parentNode, move=btn.getAttribute(&#x27;data-move&#x27;);
+  if(move===&#x27;up&#x27;&amp;&amp;tr.previousElementSibling) tbody.insertBefore(tr,tr.previousElementSibling);
+  if(move===&#x27;down&#x27;&amp;&amp;tr.nextElementSibling) tbody.insertBefore(tr.nextElementSibling,tr);
+  if(move===&#x27;top&#x27;) tbody.insertBefore(tr,tbody.firstElementChild);
+  var n=1;
+  Array.prototype.forEach.call(tbody.children,function(row,i){
+    var first=row.querySelector(&#x27;td&#x27;); if(first) first.textContent=i+1;
+    var b=row.querySelector(&#x27;.sort-cell b&#x27;); if(b){b.textContent=n; n++;}
+  });
+});
 document.querySelectorAll(&#x27;.nav-item[data-page]&#x27;).forEach(item=&gt;{
   item.addEventListener(&#x27;click&#x27;,()=&gt;{
     document.querySelectorAll(&#x27;.nav-item[data-page]&#x27;).forEach(i=&gt;i.classList.remove(&#x27;active&#x27;));
@@ -257,6 +276,10 @@ table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;back
 
 .meta-info{background:#fafbfe;border:1px solid #e6e8ef;border-radius:8px;padding:12px;font-size:13px;color:#5f6878;line-height:1.8}
 .meta-info b{color:#2c3440}
+.sort-cell{display:flex;align-items:center;gap:6px}.sort-cell b{min-width:18px}
+.sort-btn{width:22px;height:22px;border:1px solid #cfd6e4;border-radius:4px;background:#fff;color:#5f6878;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;user-select:none}
+.sort-btn:hover{border-color:var(--blue);color:var(--blue)}
+.sort-muted{color:#aab2c0;font-size:12px}
 
 
 /* Master CMS wrapper: hide duplicated inner sidebar/topbar; keep original page content */
@@ -294,7 +317,7 @@ body{background:#f4f6f9!important}
   &lt;div&gt;
     &lt;h1&gt;精選遊戲管理&lt;/h1&gt;
     &lt;div class=&quot;desc&quot;&gt;管理首頁精選遊戲與精選遊戲頁。排序共用一個欄位。&lt;/div&gt;
-    &lt;div class=&quot;logic&quot;&gt;首頁：上架＋首頁精選＝是，依排序取前 15 筆。精選遊戲頁：上架，依同一個排序顯示。精選遊戲與遊戲分類列表需顯示最後更新者與最後更新時間，方便追蹤誰最後修改。&lt;/div&gt;
+    &lt;div class=&quot;logic&quot;&gt;首頁：上架＋首頁精選＝是，依排序取前 15 筆。精選遊戲頁：上架，依同一個排序顯示。精選遊戲與遊戲分類列表需顯示最後更新者與最後更新時間，方便追蹤誰最後修改。&lt;br&gt;&lt;b&gt;排序規則（v2）：&lt;/b&gt;不開放手動輸入排序數字，一律在列表用「置頂／上移／下移」調整；系統內部以間隔編號（10、20、30…）儲存，插入時自動取中間值、間隔用盡時自動全表重編，從根本避免輸入 1.1 等非整數造成排序錯亂。&lt;/div&gt;
   &lt;/div&gt;
   &lt;button class=&quot;btn primary&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;＋ 新增遊戲&lt;/button&gt;
 &lt;/div&gt;
@@ -317,9 +340,9 @@ body{background:#f4f6f9!important}
   &lt;table&gt;
     &lt;thead&gt;&lt;tr&gt;&lt;th&gt;序號&lt;/th&gt;&lt;th&gt;圖片&lt;/th&gt;&lt;th&gt;遊戲名稱&lt;/th&gt;&lt;th&gt;遊戲商&lt;/th&gt;&lt;th&gt;分類&lt;/th&gt;&lt;th&gt;首頁精選&lt;/th&gt;&lt;th&gt;排序&lt;/th&gt;&lt;th&gt;狀態&lt;/th&gt;&lt;th&gt;最後更新者&lt;/th&gt;&lt;th&gt;最後更新時間&lt;/th&gt;&lt;th&gt;操作&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
     &lt;tbody&gt;
-      &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;Fortune Tiger&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：pg_126&lt;/div&gt;&lt;/td&gt;&lt;td&gt;PG Soft&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
-      &lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;海王捕魚&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：fish_001&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
-      &lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;百人牛牛&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：card_010&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;否&lt;/span&gt;&lt;/td&gt;&lt;td&gt;99&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;下架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;upModal&#x27;)&quot;&gt;上架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;Fortune Tiger&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：pg_126&lt;/div&gt;&lt;/td&gt;&lt;td&gt;PG Soft&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;1&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;海王捕魚&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：fish_001&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge blue&quot;&gt;是&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;2&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;上架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;downModal&#x27;)&quot;&gt;下架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;thumb&quot;&gt;圖&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;title&quot;&gt;百人牛牛&lt;/div&gt;&lt;div class=&quot;sub&quot;&gt;game_code：card_010&lt;/div&gt;&lt;/td&gt;&lt;td&gt;VA&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;否&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;sort-muted&quot;&gt;—（下架不參與排序）&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;下架&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;gameModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;previewModal&#x27;)&quot;&gt;預覽&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;upModal&#x27;)&quot;&gt;上架&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
     &lt;/tbody&gt;
   &lt;/table&gt;
 &lt;/section&gt;
@@ -328,9 +351,9 @@ body{background:#f4f6f9!important}
 &lt;section id=&quot;page-categories&quot; class=&quot;page&quot;&gt;
 &lt;div class=&quot;head&quot;&gt;&lt;div&gt;&lt;h1&gt;遊戲分類管理&lt;/h1&gt;&lt;div class=&quot;desc&quot;&gt;維護精選遊戲可選的分類，例如電子、捕魚、棋牌。分類不常異動，但獨立頁面會比較清楚。&lt;/div&gt;&lt;/div&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;＋ 新增分類&lt;/button&gt;&lt;/div&gt;
 &lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;card-hd&quot;&gt;分類列表&lt;/div&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;序號&lt;/th&gt;&lt;th&gt;分類名稱&lt;/th&gt;&lt;th&gt;排序&lt;/th&gt;&lt;th&gt;狀態&lt;/th&gt;&lt;th&gt;最後更新者&lt;/th&gt;&lt;th&gt;最後更新時間&lt;/th&gt;&lt;th&gt;操作&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;停用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;電子&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;1&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小明&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;捕魚&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;sort-cell&quot;&gt;&lt;b&gt;2&lt;/b&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;top&quot; title=&quot;置頂&quot;&gt;⤒&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;up&quot; title=&quot;上移&quot;&gt;↑&lt;/span&gt;&lt;span class=&quot;sort-btn&quot; data-move=&quot;down&quot; title=&quot;下移&quot;&gt;↓&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;啟用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;小華&lt;/td&gt;&lt;td&gt;2026/06/08 17:20&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;棋牌&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;sort-muted&quot;&gt;—（停用不參與排序）&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;停用&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;td&gt;2026/06/07 11:05&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;categoryModal&#x27;)&quot;&gt;編輯&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;&lt;/section&gt;
 &lt;/section&gt;
 
@@ -340,7 +363,7 @@ body{background:#f4f6f9!important}
 &lt;section class=&quot;modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;新增遊戲 / 編輯遊戲 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;gameModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;form&quot;&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;上架&lt;/option&gt;&lt;option&gt;下架&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;是否首頁精選 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;是&lt;/option&gt;&lt;option&gt;否&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;1&quot;&gt;&lt;div class=&quot;hint&quot;&gt;首頁與精選遊戲頁共用同一個排序。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序位置&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;第 1 位（共 15 筆）&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;首頁與精選遊戲頁共用同一個排序。排序一律在列表用「置頂／上移／下移」調整，此欄僅顯示目前位置，不開放手動輸入數字。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;遊戲分類 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;電子&lt;/option&gt;&lt;option&gt;捕魚&lt;/option&gt;&lt;option&gt;棋牌&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;遊戲圖片 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;upload&quot;&gt;&lt;div class=&quot;plus&quot;&gt;＋&lt;/div&gt;&lt;div&gt;上傳圖片&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;建議 1:1，至少 512 × 512 px&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;遊戲名稱 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;Fortune Tiger&quot;&gt;&lt;/div&gt;
@@ -352,7 +375,7 @@ body{background:#f4f6f9!important}
 &lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;gameModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;gameModal&#x27;);openModal(&#x27;successModal&#x27;)&quot;&gt;儲存&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;
 &lt;/div&gt;
 
-&lt;div id=&quot;categoryModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;新增 / 編輯分類 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;分類名稱 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;電子&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;1&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;啟用&lt;/option&gt;&lt;option&gt;停用&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;停用分類後，新增/編輯遊戲時不再顯示，但既有資料仍保留。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;儲存&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;div id=&quot;categoryModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;新增 / 編輯分類 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;分類名稱 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;電子&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;排序位置&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;第 1 位（共 3 筆）&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;排序一律在列表用「置頂／上移／下移」調整，不開放手動輸入數字。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;啟用&lt;/option&gt;&lt;option&gt;停用&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;停用分類後，新增/編輯遊戲時不再顯示，但既有資料仍保留。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;categoryModal&#x27;)&quot;&gt;儲存&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
 &lt;div id=&quot;previewModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal preview-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;前台遊戲彈窗預覽 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;previewModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;phone&quot;&gt;&lt;div class=&quot;game-preview&quot;&gt;&lt;div class=&quot;pimg&quot;&gt;遊戲圖片&lt;/div&gt;&lt;div class=&quot;ptitle&quot;&gt;Fortune Tiger&lt;/div&gt;&lt;div class=&quot;pdesc&quot;&gt;人氣老虎機遊戲，節奏快速、畫面鮮明，適合喜歡簡單直覺玩法的玩家。&lt;/div&gt;&lt;div class=&quot;qrrow&quot;&gt;&lt;div class=&quot;qr&quot;&gt;QR&lt;/div&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;&lt;b style=&quot;color:#FFD700&quot;&gt;掃描 QR Code&lt;/b&gt;&lt;br&gt;立即開啟遊戲&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;play&quot;&gt;立即進入遊戲&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
 &lt;div id=&quot;downModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;下架確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;downModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message danger-msg&quot;&gt;確定要下架 &lt;b&gt;Fortune Tiger&lt;/b&gt; 嗎？&lt;br&gt;下架後，該遊戲將不會出現在首頁精選遊戲與精選遊戲頁。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;downModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn red&quot; onclick=&quot;closeModal(&#x27;downModal&#x27;)&quot;&gt;確認下架&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
 &lt;div id=&quot;upModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;上架確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;upModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message info-msg&quot;&gt;確定要上架 &lt;b&gt;百人牛牛&lt;/b&gt; 嗎？&lt;br&gt;上架後，玩家即可在官網前台看到此遊戲。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;upModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;upModal&#x27;)&quot;&gt;確認上架&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
@@ -361,6 +384,19 @@ body{background:#f4f6f9!important}
 &lt;script&gt;
 function openModal(id){document.getElementById(id).classList.add(&#x27;open&#x27;)}
 function closeModal(id){document.getElementById(id).classList.remove(&#x27;open&#x27;)}
+/* 排序：置頂／上移／下移，移動後自動重編序號與排序位置 */
+document.addEventListener(&#x27;click&#x27;,function(e){
+  var btn=e.target.closest(&#x27;.sort-btn&#x27;); if(!btn) return;
+  var tr=btn.closest(&#x27;tr&#x27;), tbody=tr.parentNode, move=btn.getAttribute(&#x27;data-move&#x27;);
+  if(move===&#x27;up&#x27;&amp;&amp;tr.previousElementSibling) tbody.insertBefore(tr,tr.previousElementSibling);
+  if(move===&#x27;down&#x27;&amp;&amp;tr.nextElementSibling) tbody.insertBefore(tr.nextElementSibling,tr);
+  if(move===&#x27;top&#x27;) tbody.insertBefore(tr,tbody.firstElementChild);
+  var n=1;
+  Array.prototype.forEach.call(tbody.children,function(row,i){
+    var first=row.querySelector(&#x27;td&#x27;); if(first) first.textContent=i+1;
+    var b=row.querySelector(&#x27;.sort-cell b&#x27;); if(b){b.textContent=n; n++;}
+  });
+});
 document.querySelectorAll(&#x27;.nav-item[data-page]&#x27;).forEach(item=&gt;{
   item.addEventListener(&#x27;click&#x27;,()=&gt;{
     document.querySelectorAll(&#x27;.nav-item[data-page]&#x27;).forEach(i=&gt;i.classList.remove(&#x27;active&#x27;));
@@ -433,7 +469,7 @@ body{background:#f4f6f9!important}
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;狀態 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;草稿&lt;/option&gt;&lt;option&gt;發布&lt;/option&gt;&lt;option&gt;下架&lt;/option&gt;&lt;/select&gt;&lt;div class=&quot;hint&quot;&gt;下架請在這裡調整狀態，列表外層不另外提供下架按鈕。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;文章分類 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;遊戲攻略&lt;/option&gt;&lt;option&gt;平台介紹&lt;/option&gt;&lt;option&gt;活動情報&lt;/option&gt;&lt;/select&gt;&lt;div class=&quot;hint&quot;&gt;第一版分類先寫死，不做分類管理。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field&quot;&gt;&lt;label&gt;首頁推薦 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;是&lt;/option&gt;&lt;option&gt;否&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-&lt;div class=&quot;field&quot;&gt;&lt;label&gt;首頁推薦排序&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;1&quot;&gt;&lt;div class=&quot;hint&quot;&gt;首頁推薦＝否時，此欄 disabled；最多 4 篇可設定首頁推薦。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;首頁推薦排序&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;1&lt;/option&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;/select&gt;&lt;div class=&quot;hint&quot;&gt;首頁推薦＝否時，此欄 disabled；最多 4 篇，固定下拉選 1～4，不開放手動輸入，避免非整數造成排序錯亂。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;發布設定&lt;/label&gt;&lt;div class=&quot;form3&quot;&gt;&lt;label style=&quot;display:flex;align-items:center;gap:8px;margin:0&quot;&gt;&lt;input type=&quot;checkbox&quot; checked&gt; 立即發布&lt;/label&gt;&lt;div class=&quot;field&quot; style=&quot;margin:0&quot;&gt;&lt;label&gt;發布日期&lt;/label&gt;&lt;input class=&quot;input&quot; disabled value=&quot;2026/06/08&quot;&gt;&lt;/div&gt;&lt;div class=&quot;field&quot; style=&quot;margin:0&quot;&gt;&lt;label&gt;發布時間&lt;/label&gt;&lt;input class=&quot;input&quot; disabled value=&quot;14:30&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;勾選「立即發布」時，日期與時間欄位 disabled；取消勾選後可設定排程發布。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;封面圖 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;upload&quot;&gt;&lt;div class=&quot;plus&quot;&gt;＋&lt;/div&gt;&lt;div&gt;上傳文章封面&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;建議比例 987:493，JPG / PNG / WEBP，最大 2MB。&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;文章標題 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;老虎機免費遊戲攻略&quot;&gt;&lt;/div&gt;
@@ -442,7 +478,10 @@ body{background:#f4f6f9!important}
 &lt;div class=&quot;section-title&quot;&gt;SEO 設定&lt;/div&gt;&lt;div class=&quot;form&quot;&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;網址後綴 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;老虎機免費遊戲攻略&quot;&gt;&lt;div class=&quot;hint&quot;&gt;支援中文或英文，需檢查不可重複。例：老虎機免費遊戲攻略 或 slot-free-game-guide。&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;field full&quot;&gt;&lt;label&gt;SEO Title（選填）&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;老虎機免費遊戲攻略&quot;&gt;&lt;div class=&quot;hint&quot;&gt;營運只需填前半段。未填時使用文章標題；前台會自動輸出：SEO Title｜星運娛樂城。&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;SEO Description（選填）&lt;/label&gt;&lt;textarea class=&quot;textarea&quot;&gt;整理老虎機免費遊戲觸發方式、常見玩法與新手注意事項，幫助玩家快速了解遊戲特色。&lt;/textarea&gt;&lt;div class=&quot;hint&quot;&gt;未填時使用文章說明；會動態帶入 meta description 與 og:description。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;SEO Description（選填）&lt;/label&gt;&lt;textarea class=&quot;textarea&quot;&gt;整理老虎機免費遊戲觸發方式、常見玩法與新手注意事項，幫助玩家快速了解遊戲特色。&lt;/textarea&gt;&lt;div class=&quot;hint&quot;&gt;未填時使用文章說明；會動態帶入 meta description。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;OG Title（選填）&lt;/label&gt;&lt;input class=&quot;input&quot; placeholder=&quot;例：免費遊戲攻略大公開&quot;&gt;&lt;div class=&quot;hint&quot;&gt;社群分享（LINE／FB）卡片顯示的標題，會輸出 og:title。未填時使用 SEO Title；建議口語化、有吸引力，與 SEO Title 可不同。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;OG Description（選填）&lt;/label&gt;&lt;textarea class=&quot;textarea&quot; placeholder=&quot;例：免費遊戲怎麼觸發？高倍率技巧整理馬上看。&quot;&gt;&lt;/textarea&gt;&lt;div class=&quot;hint&quot;&gt;社群分享卡片顯示的說明文字，會輸出 og:description。未填時使用 SEO Description；建議口語化，與 SEO Description 可不同。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;OG Image（分享縮圖，選填）&lt;/label&gt;&lt;div class=&quot;upload&quot;&gt;&lt;div class=&quot;plus&quot;&gt;＋&lt;/div&gt;&lt;div&gt;上傳分享縮圖&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;建議 1200 × 630 px（約 1.91:1），JPG / PNG / WEBP，最大 2MB。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;hint&quot;&gt;社群分享卡片的圖片，會輸出 og:image。未上傳時依序使用：文章封面圖 → 全站預設 OG Image。&lt;/div&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;section-title&quot;&gt;文章內容&lt;/div&gt;&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;文章內容 &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;&lt;textarea class=&quot;textarea rich&quot;&gt;這裡是 Rich Text Editor 示意，可輸入 H2、H3、段落、圖片、列表與表格。&lt;/textarea&gt;&lt;/div&gt;
 &lt;div class=&quot;section-title&quot;&gt;FAQ（2/10）&lt;/div&gt;
@@ -457,7 +496,7 @@ body{background:#f4f6f9!important}
 
 &lt;script&gt;
 (function(){
-  var target = None;
+  var target = null;
   function activate(){
     if(target){
       document.querySelectorAll(&#x27;.page&#x27;).forEach(function(p){p.classList.remove(&#x27;active&#x27;); p.style.display=&#x27;none&#x27;;});
@@ -715,6 +754,19 @@ body{background:#f4f6f9!important}
 &lt;script&gt;
 function openModal(id){document.getElementById(id).classList.add(&#x27;open&#x27;)}
 function closeModal(id){document.getElementById(id).classList.remove(&#x27;open&#x27;)}
+/* 排序：置頂／上移／下移，移動後自動重編序號與排序位置 */
+document.addEventListener(&#x27;click&#x27;,function(e){
+  var btn=e.target.closest(&#x27;.sort-btn&#x27;); if(!btn) return;
+  var tr=btn.closest(&#x27;tr&#x27;), tbody=tr.parentNode, move=btn.getAttribute(&#x27;data-move&#x27;);
+  if(move===&#x27;up&#x27;&amp;&amp;tr.previousElementSibling) tbody.insertBefore(tr,tr.previousElementSibling);
+  if(move===&#x27;down&#x27;&amp;&amp;tr.nextElementSibling) tbody.insertBefore(tr.nextElementSibling,tr);
+  if(move===&#x27;top&#x27;) tbody.insertBefore(tr,tbody.firstElementChild);
+  var n=1;
+  Array.prototype.forEach.call(tbody.children,function(row,i){
+    var first=row.querySelector(&#x27;td&#x27;); if(first) first.textContent=i+1;
+    var b=row.querySelector(&#x27;.sort-cell b&#x27;); if(b){b.textContent=n; n++;}
+  });
+});
 document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(item=&gt;{item.addEventListener(&#x27;click&#x27;,()=&gt;{document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(i=&gt;i.classList.remove(&#x27;active&#x27;));item.classList.add(&#x27;active&#x27;);document.querySelectorAll(&#x27;.page&#x27;).forEach(p=&gt;p.classList.remove(&#x27;active&#x27;));document.getElementById(&#x27;page-&#x27;+item.dataset.page).classList.add(&#x27;active&#x27;);document.getElementById(&#x27;crumb&#x27;).textContent=&#x27;活動管理 / &#x27;+item.textContent.trim();})})
 &lt;/script&gt;
 
@@ -980,6 +1032,19 @@ body{background:#f4f6f9!important}
 &lt;script&gt;
 function openModal(id){document.getElementById(id).classList.add(&#x27;open&#x27;)}
 function closeModal(id){document.getElementById(id).classList.remove(&#x27;open&#x27;)}
+/* 排序：置頂／上移／下移，移動後自動重編序號與排序位置 */
+document.addEventListener(&#x27;click&#x27;,function(e){
+  var btn=e.target.closest(&#x27;.sort-btn&#x27;); if(!btn) return;
+  var tr=btn.closest(&#x27;tr&#x27;), tbody=tr.parentNode, move=btn.getAttribute(&#x27;data-move&#x27;);
+  if(move===&#x27;up&#x27;&amp;&amp;tr.previousElementSibling) tbody.insertBefore(tr,tr.previousElementSibling);
+  if(move===&#x27;down&#x27;&amp;&amp;tr.nextElementSibling) tbody.insertBefore(tr.nextElementSibling,tr);
+  if(move===&#x27;top&#x27;) tbody.insertBefore(tr,tbody.firstElementChild);
+  var n=1;
+  Array.prototype.forEach.call(tbody.children,function(row,i){
+    var first=row.querySelector(&#x27;td&#x27;); if(first) first.textContent=i+1;
+    var b=row.querySelector(&#x27;.sort-cell b&#x27;); if(b){b.textContent=n; n++;}
+  });
+});
 document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(item=&gt;{item.addEventListener(&#x27;click&#x27;,()=&gt;{document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(i=&gt;i.classList.remove(&#x27;active&#x27;));item.classList.add(&#x27;active&#x27;);document.querySelectorAll(&#x27;.page&#x27;).forEach(p=&gt;p.classList.remove(&#x27;active&#x27;));document.getElementById(&#x27;page-&#x27;+item.dataset.page).classList.add(&#x27;active&#x27;);document.getElementById(&#x27;crumb&#x27;).textContent=&#x27;活動管理 / &#x27;+item.textContent.trim();})})
 &lt;/script&gt;
 
@@ -1245,6 +1310,19 @@ body{background:#f4f6f9!important}
 &lt;script&gt;
 function openModal(id){document.getElementById(id).classList.add(&#x27;open&#x27;)}
 function closeModal(id){document.getElementById(id).classList.remove(&#x27;open&#x27;)}
+/* 排序：置頂／上移／下移，移動後自動重編序號與排序位置 */
+document.addEventListener(&#x27;click&#x27;,function(e){
+  var btn=e.target.closest(&#x27;.sort-btn&#x27;); if(!btn) return;
+  var tr=btn.closest(&#x27;tr&#x27;), tbody=tr.parentNode, move=btn.getAttribute(&#x27;data-move&#x27;);
+  if(move===&#x27;up&#x27;&amp;&amp;tr.previousElementSibling) tbody.insertBefore(tr,tr.previousElementSibling);
+  if(move===&#x27;down&#x27;&amp;&amp;tr.nextElementSibling) tbody.insertBefore(tr.nextElementSibling,tr);
+  if(move===&#x27;top&#x27;) tbody.insertBefore(tr,tbody.firstElementChild);
+  var n=1;
+  Array.prototype.forEach.call(tbody.children,function(row,i){
+    var first=row.querySelector(&#x27;td&#x27;); if(first) first.textContent=i+1;
+    var b=row.querySelector(&#x27;.sort-cell b&#x27;); if(b){b.textContent=n; n++;}
+  });
+});
 document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(item=&gt;{item.addEventListener(&#x27;click&#x27;,()=&gt;{document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(i=&gt;i.classList.remove(&#x27;active&#x27;));item.classList.add(&#x27;active&#x27;);document.querySelectorAll(&#x27;.page&#x27;).forEach(p=&gt;p.classList.remove(&#x27;active&#x27;));document.getElementById(&#x27;page-&#x27;+item.dataset.page).classList.add(&#x27;active&#x27;);document.getElementById(&#x27;crumb&#x27;).textContent=&#x27;活動管理 / &#x27;+item.textContent.trim();})})
 &lt;/script&gt;
 
@@ -1268,6 +1346,118 @@ document.querySelectorAll(&#x27;.item[data-page]&#x27;).forEach(item=&gt;{item.a
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
+</section>
+<section id="master-suspension" class="master-page ">
+  <iframe title="客服管理 / 停權名單管理" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-Hant&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;停權名單管理 Mockup v1&lt;/title&gt;
+&lt;style&gt;
+:root{--bg:#f4f6f9;--side:#252b3a;--deep:#1e2431;--blue:#2f80ed;--green:#18a058;--red:#d03050;--line:#e6e8ef;--text:#2c3440;--muted:#7b8494;--input:#f9fafc}
+*{box-sizing:border-box}
+body{margin:0;font-family:&quot;Microsoft JhengHei&quot;,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.content{padding:24px}
+.head{display:flex;justify-content:space-between;gap:20px;margin-bottom:18px;align-items:flex-start}h1{font-size:24px;margin:0 0 8px}.desc{font-size:14px;color:var(--muted);line-height:1.6}
+.logic{margin-top:10px;background:#eef6ff;border:1px solid #cae0ff;color:#28507d;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.7}
+.btn{border:0;border-radius:6px;min-height:34px;padding:0 14px;font-weight:700;font-family:inherit;font-size:13px;cursor:pointer}
+.btn.primary{background:var(--blue);color:white}.btn.gray{background:#eef1f6}.btn.red{background:var(--red);color:white}.btn.outline{background:#fff;border:1px solid #cfd6e4}
+.card,.modal{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 8px rgba(32,42,68,.04);margin-bottom:18px;overflow:hidden}
+.card-hd,.modal-hd{padding:16px 18px;border-bottom:1px solid var(--line);font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.card-bd,.modal-bd{padding:18px}.filters{display:grid;grid-template-columns:1.3fr 1fr 1fr auto auto;gap:12px;align-items:end}
+.field label{display:block;font-size:12px;color:#5f6878;margin-bottom:6px;font-weight:700}.input,.select,.textarea{width:100%;border:1px solid #d8deea;background:var(--input);border-radius:6px;min-height:34px;padding:7px 10px;font-family:inherit}.textarea{min-height:90px}.hint{font-size:12px;color:#8a93a3;margin-top:6px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;background:#fafbfe;color:#5f6878;padding:12px 10px;border-bottom:1px solid var(--line)}td{padding:12px 10px;border-bottom:1px solid #eef0f5}
+.badge{padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800}.blue{background:#e9f2ff;color:#236acb}.greenb{background:#e8f7ef;color:#10804a}.grayb{background:#eef1f6;color:#637083}.redb{background:#ffecf0;color:#c22a4a}.orangeb{background:#fff4e5;color:#b96a00}
+.op{display:flex;gap:8px}.link{color:var(--blue);font-weight:800;font-size:13px;cursor:pointer}.danger{color:var(--red)}
+.overlay{position:fixed;inset:0;background:rgba(16,24,40,.52);display:none;align-items:center;justify-content:center;z-index:99;padding:24px}.overlay.open{display:flex}
+.modal{width:640px;max-width:96vw;max-height:92vh;overflow:auto}.small-modal{width:430px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.req{color:var(--red)}
+.modal-ft{padding:14px 18px;border-top:1px solid var(--line);background:#fafbfe;display:flex;justify-content:flex-end;gap:10px}
+.message{font-size:15px;line-height:1.8;border-radius:8px;padding:14px}.success-msg{background:#f1fff6;border:1px solid #c8f0d8}.danger-msg{background:#fff8fa;border:1px solid #ffdce4}
+@media(max-width:1000px){.filters{grid-template-columns:1fr}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;content&quot;&gt;
+
+&lt;div class=&quot;head&quot;&gt;
+  &lt;div&gt;
+    &lt;h1&gt;停權名單管理&lt;/h1&gt;
+    &lt;div class=&quot;desc&quot;&gt;停權名單由平台 API 同步，後台不可新增、不可修改停權資料，僅審查決定每筆資料是否顯示於官網（同資料同步管理的審查模式）。&lt;/div&gt;
+    &lt;div class=&quot;logic&quot;&gt;資料來源：平台 API。玩家暱稱、停權日期、停權原因、處置、解除日期皆為同步資料，一律唯讀。營運僅控制「顯示於官網」：同步後資料進待審核區，審查通過＝顯示於官網、不通過＝隱藏。前台僅顯示「顯示中」且仍在停權期間內的資料（暫時停權到期自動下架）；沒有可顯示資料時，前台自動顯示「目前尚無停權資料」空狀態。玩家暱稱對外一律自動遮罩（保留首尾字，中間以＊取代）。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;section class=&quot;card&quot;&gt;
+  &lt;div class=&quot;card-hd&quot;&gt;同步資訊&lt;/div&gt;
+  &lt;div class=&quot;card-bd&quot; style=&quot;display:flex;justify-content:space-between;align-items:center;gap:16px&quot;&gt;
+    &lt;div style=&quot;font-size:13px;color:#5f6878;line-height:1.9&quot;&gt;最後同步時間:2026/06/08 18:30:25&lt;br&gt;API 狀態:正常&lt;br&gt;同步條件:帳號狀態＝停權中（含永久與暫時）&lt;br&gt;本次同步結果:新增 1 筆、更新 1 筆、停權解除自動下架 1 筆&lt;/div&gt;
+    &lt;button class=&quot;btn primary&quot; onclick=&quot;openModal(&#x27;syncModal&#x27;)&quot;&gt;立即同步&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;card&quot;&gt;
+  &lt;div class=&quot;card-hd&quot;&gt;查詢條件&lt;/div&gt;
+  &lt;div class=&quot;card-bd&quot;&gt;
+    &lt;div class=&quot;filters&quot;&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;玩家暱稱&lt;/label&gt;&lt;input class=&quot;input&quot; placeholder=&quot;請輸入玩家暱稱&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;處置類型&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;全部&lt;/option&gt;&lt;option&gt;永久停權&lt;/option&gt;&lt;option&gt;暫時停權&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;官網狀態&lt;/label&gt;&lt;select class=&quot;select&quot;&gt;&lt;option&gt;全部&lt;/option&gt;&lt;option&gt;待審核&lt;/option&gt;&lt;option&gt;顯示中&lt;/option&gt;&lt;option&gt;已隱藏&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;button class=&quot;btn primary&quot;&gt;搜尋&lt;/button&gt;&lt;button class=&quot;btn gray&quot;&gt;重置&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;card&quot;&gt;
+  &lt;div class=&quot;card-hd&quot;&gt;停權名單（API 同步資料）&lt;span&gt;&lt;button class=&quot;btn green&quot; onclick=&quot;openModal(&#x27;batchShowModal&#x27;)&quot;&gt;批次顯示&lt;/button&gt;　&lt;button class=&quot;btn red&quot; onclick=&quot;openModal(&#x27;batchHideModal&#x27;)&quot;&gt;批次不顯示&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+  &lt;table&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;input type=&quot;checkbox&quot;&gt;&lt;/th&gt;&lt;th&gt;玩家暱稱（前台遮罩）&lt;/th&gt;&lt;th&gt;停權日期&lt;/th&gt;&lt;th&gt;停權原因&lt;/th&gt;&lt;th&gt;處置&lt;/th&gt;&lt;th&gt;解除日期&lt;/th&gt;&lt;th&gt;官網狀態&lt;/th&gt;&lt;th&gt;同步時間&lt;/th&gt;&lt;th&gt;操作&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;input type=&quot;checkbox&quot; checked&gt;&lt;/td&gt;&lt;td&gt;星＊＊運&lt;/td&gt;&lt;td&gt;2026/06/08&lt;/td&gt;&lt;td&gt;使用外掛程式，違反遊戲規章&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge redb&quot;&gt;永久停權&lt;/span&gt;&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge orangeb&quot;&gt;待審核&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2026/06/08 18:30&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;reviewModal&#x27;)&quot;&gt;查看&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;showModal&#x27;)&quot;&gt;顯示&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;hideModal&#x27;)&quot;&gt;不顯示&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;input type=&quot;checkbox&quot;&gt;&lt;/td&gt;&lt;td&gt;發＊＊財&lt;/td&gt;&lt;td&gt;2026/06/05&lt;/td&gt;&lt;td&gt;非法遊戲幣交易&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge redb&quot;&gt;永久停權&lt;/span&gt;&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;顯示中&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2026/06/05 14:10&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;reviewModal&#x27;)&quot;&gt;查看&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;hideModal&#x27;)&quot;&gt;隱藏&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;input type=&quot;checkbox&quot;&gt;&lt;/td&gt;&lt;td&gt;幸＊＊星&lt;/td&gt;&lt;td&gt;2026/06/02&lt;/td&gt;&lt;td&gt;異常登入行為，帳號保全處理中&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge orangeb&quot;&gt;暫時停權&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2026/07/02&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge greenb&quot;&gt;顯示中&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2026/06/02 09:45&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;reviewModal&#x27;)&quot;&gt;查看&lt;/span&gt;&lt;span class=&quot;link danger&quot; onclick=&quot;openModal(&#x27;hideModal&#x27;)&quot;&gt;隱藏&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;input type=&quot;checkbox&quot;&gt;&lt;/td&gt;&lt;td&gt;測＊＊試&lt;/td&gt;&lt;td&gt;2026/05/30&lt;/td&gt;&lt;td&gt;內部測試資料&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge orangeb&quot;&gt;暫時停權&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2026/06/30&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge grayb&quot;&gt;已隱藏&lt;/span&gt;&lt;/td&gt;&lt;td&gt;2026/05/30 16:20&lt;/td&gt;&lt;td&gt;&lt;div class=&quot;op&quot;&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;reviewModal&#x27;)&quot;&gt;查看&lt;/span&gt;&lt;span class=&quot;link&quot; onclick=&quot;openModal(&#x27;showModal&#x27;)&quot;&gt;顯示&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;card&quot;&gt;
+  &lt;div class=&quot;card-hd&quot;&gt;審核紀錄&lt;/div&gt;
+  &lt;table&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;時間&lt;/th&gt;&lt;th&gt;動作&lt;/th&gt;&lt;th&gt;對象&lt;/th&gt;&lt;th&gt;操作者&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;&lt;td&gt;2026/06/05 14:20&lt;/td&gt;&lt;td&gt;設為顯示&lt;/td&gt;&lt;td&gt;發＊＊財&lt;/td&gt;&lt;td&gt;Jill&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;2026/06/02 10:02&lt;/td&gt;&lt;td&gt;設為顯示&lt;/td&gt;&lt;td&gt;幸＊＊星&lt;/td&gt;&lt;td&gt;Jill&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;2026/05/30 16:25&lt;/td&gt;&lt;td&gt;設為不顯示&lt;/td&gt;&lt;td&gt;測＊＊試&lt;/td&gt;&lt;td&gt;Admin&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/section&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;reviewModal&quot; class=&quot;overlay&quot;&gt;
+&lt;section class=&quot;modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;查看停權資料（API 同步，唯讀） &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;reviewModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;form&quot;&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;玩家暱稱（完整）&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;星星好運&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;API 同步資料，不可編輯；前台自動遮罩顯示為「星＊＊運」。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;處置類型&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;永久停權&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;API 同步資料，不可編輯。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;停權日期&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;2026/06/08&quot; disabled&gt;&lt;/div&gt;
+&lt;div class=&quot;field&quot;&gt;&lt;label&gt;解除日期&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;—（永久停權）&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;暫時停權到期後，前台自動下架此筆資料。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;停權原因&lt;/label&gt;&lt;textarea class=&quot;textarea&quot; disabled&gt;使用外掛程式，違反遊戲規章&lt;/textarea&gt;&lt;div class=&quot;hint&quot;&gt;API 同步資料，不可編輯；審查時請確認內容適合公開（不含個資或內部處理細節），不適合公開請設為不顯示。&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;field full&quot;&gt;&lt;label&gt;官網狀態&lt;/label&gt;&lt;input class=&quot;input&quot; value=&quot;待審核&quot; disabled&gt;&lt;div class=&quot;hint&quot;&gt;如需調整，請於列表使用「顯示／不顯示／隱藏」操作。&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;reviewModal&#x27;)&quot;&gt;關閉&lt;/button&gt;&lt;button class=&quot;btn green&quot; onclick=&quot;closeModal(&#x27;reviewModal&#x27;);openModal(&#x27;showModal&#x27;)&quot;&gt;設為顯示&lt;/button&gt;&lt;button class=&quot;btn red&quot; onclick=&quot;closeModal(&#x27;reviewModal&#x27;);openModal(&#x27;hideModal&#x27;)&quot;&gt;設為不顯示&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;showModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;顯示確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;showModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message success-msg&quot;&gt;確定要將 &lt;b&gt;星＊＊運&lt;/b&gt; 顯示於官網停權名單嗎？&lt;br&gt;確認後前台立即顯示（暱稱自動遮罩）。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;showModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn green&quot; onclick=&quot;closeModal(&#x27;showModal&#x27;)&quot;&gt;確認顯示&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;div id=&quot;hideModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;不顯示確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;hideModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message danger-msg&quot;&gt;確定不將 &lt;b&gt;星＊＊運&lt;/b&gt; 顯示於官網嗎？&lt;br&gt;設定後前台不顯示這筆資料；資料仍保留於後台，之後可再設為顯示。平台端帳號的實際停權狀態不受影響。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;hideModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn red&quot; onclick=&quot;closeModal(&#x27;hideModal&#x27;)&quot;&gt;確認不顯示&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;div id=&quot;batchShowModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;批次顯示確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;batchShowModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message success-msg&quot;&gt;確定要將勾選的 &lt;b&gt;1 筆&lt;/b&gt;停權資料顯示於官網嗎？&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;batchShowModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn green&quot; onclick=&quot;closeModal(&#x27;batchShowModal&#x27;)&quot;&gt;確認顯示&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;div id=&quot;batchHideModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;批次不顯示確認 &lt;span class=&quot;link&quot; onclick=&quot;closeModal(&#x27;batchHideModal&#x27;)&quot;&gt;×&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message danger-msg&quot;&gt;確定不將勾選的 &lt;b&gt;1 筆&lt;/b&gt;停權資料顯示於官網嗎？&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn outline&quot; onclick=&quot;closeModal(&#x27;batchHideModal&#x27;)&quot;&gt;取消&lt;/button&gt;&lt;button class=&quot;btn red&quot; onclick=&quot;closeModal(&#x27;batchHideModal&#x27;)&quot;&gt;確認不顯示&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;div id=&quot;syncModal&quot; class=&quot;overlay&quot;&gt;&lt;section class=&quot;modal small-modal&quot;&gt;&lt;div class=&quot;modal-hd&quot;&gt;同步完成&lt;/div&gt;&lt;div class=&quot;modal-bd&quot;&gt;&lt;div class=&quot;message success-msg&quot;&gt;已向平台 API 同步最新停權名單。&lt;br&gt;新增 1 筆、更新 1 筆、停權解除自動下架 1 筆。&lt;br&gt;新同步的資料已進入「待審核」，請審查後決定是否顯示於官網。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;modal-ft&quot;&gt;&lt;button class=&quot;btn primary&quot; onclick=&quot;closeModal(&#x27;syncModal&#x27;)&quot;&gt;確定&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+
+&lt;script&gt;
+function openModal(id){document.getElementById(id).classList.add(&#x27;open&#x27;)}
+function closeModal(id){document.getElementById(id).classList.remove(&#x27;open&#x27;)}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
 </section>
 <section id="master-permission" class="master-page ">
   <iframe title="系統管理 / 權限管理" srcdoc="&lt;!DOCTYPE html&gt;
@@ -1460,7 +1650,7 @@ body{background:#f4f6f9!important}
 
 &lt;script&gt;
 (function(){
-  var target = None;
+  var target = null;
   function activate(){
     if(target){
       document.querySelectorAll(&#x27;.page&#x27;).forEach(function(p){p.classList.remove(&#x27;active&#x27;); p.style.display=&#x27;none&#x27;;});
@@ -1484,6 +1674,7 @@ body{background:#f4f6f9!important}
 const labels = {
   games:'遊戲管理 / 精選遊戲管理', categories:'遊戲管理 / 遊戲分類管理', guide:'文章管理 / 攻略專區管理',
   sync:'活動管理 / 資料同步管理', activity:'活動管理 / 活動管理', notice:'活動管理 / 公告管理',
+  suspension:'客服管理 / 停權名單管理',
   permission:'系統管理 / 權限管理', log:'系統管理 / 操作紀錄'
 };
 function showMasterPage(key){
